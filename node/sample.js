@@ -1,0 +1,1 @@
+console.log("it is printed by using the package.json throught the start")

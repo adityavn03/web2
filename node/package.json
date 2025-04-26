@@ -1,0 +1,18 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "main": "sample.js",
+  "scripts": {
+    "start": "node sample.js",
+    "start1": "node sample1.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commender": "^0.0.1-security",
+    "express": "^5.1.0"
+  }
+}

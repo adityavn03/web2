@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.6/axios.min.js"></script>
+</head>
+<body>
+    <input id="one" type="text">
+    <input id="two" type="text">
+    <button onclick="add()">submit</button>
+
+
+    <script>
+        function add(){
+            let a= Number(document.getElementById('one').value)
+            let b= Number(document.getElementById('two').value)
+        
+            axios.post("http://localhost:3000/sum",{
+                a:a,
+                b:b
+                
+            }).then((res)=>{
+                console.log(res.sum)
+
+            })
+
+        }
+
+    </script>
+
+    
+    
+</body>
+</html>
