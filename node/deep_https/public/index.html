@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.6/axios.min.js"></script>
+    <title>Auth meddleware</title>
+</head>
+<body>
+    <div>
+    <h1>Signup</h1>
+    <input id="username_up" type="text" placeholder="username">
+    <input id="password_up" type="text" placeholder="password">
+    <button onclick="signup()">Signup</button>
+    </div>
+    <div>
+        <h1>Signin</h1>
+        <input id="username_in" type="text" placeholder="username">
+        <input id="password_in" type="text" placeholder="password">
+        <button onclick="signin()">Signin</button>
+    </div>
+    <div>
+        <h1>user information</h1>
+        <p id="userdetails"></p>
+    </div>
+    <div>
+        <h1>logout</h1>
+        <button onclick="logout()">logout</button>
+    </div>
+    <script>
+        async function signup(){
+            let username=document.getElementById("username_up").value
+            let password=document.getElementById("password_up").value;
+            await axios.post("http://localhost:3000/signup",{
+                username:username,
+                password:password
+            })
+            alert("signup")
+        }
+        async function signin(){
+            let username=document.getElementById("username_in").value
+            let password=document.getElementById("password_in").value;
+            const res=await axios.post("http://localhost:3000/signin",{
+                username:username,
+                password:password
+            })
+            console.log(res.data.token)
+            localStorage.setItem("token",res.data.token)
+            alert("signin")
+            getinformation();
+        }
+        async function getinformation(){
+            let res=await axios.get("http://localhost:3000/me",{
+                headers:{
+                    token:localStorage.getItem("token")
+                }
+            })
+            document.getElementById("userdetails").innerHTML="username      "+res.data.username+" "+"password         "+res.data.password;
+        }
+        async function logout(){
+            localStorage.removeItem("token");
+        }
+    </script>
+    
+</body>
+</html>
