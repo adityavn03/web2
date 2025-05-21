@@ -1,9 +1,13 @@
+//zod validation check hashing throught the bycrypt and backend and the mongodb are use in this folder 
+
 const express=require("express");
 const jwt=require("jsonwebtoken")
 const mongoose=require("mongoose")
+const bcrypt=require("bcrypt");
 const {usermodel,todomodel}=require("./db");
 const jwt_secret="messi"
 const app=express();
+const {z} =require("zod");
 app.use(express.json());
 mongoose.connect("mongodb+srv://adityavn03:adityavn@cluster0.6sdfg.mongodb.net/todo-app")
 
@@ -12,9 +16,26 @@ app.post("/signup",async (req,res)=>{
     const email=req.body.email
     const password=req.body.password
     const username=req.body.username
+    const requiredcondition=z.object({
+        email:z.string().min(3).max(100).email(),
+        password:z.string().min(2).max(23),
+        username:z.string().min(2).max(23)
+    })
+    const {success,error}=requiredcondition.safeParse({email,password,username});
+    if(!success){
+        res.json({
+            message:"the above three condition is not satisfy",
+            error
+        })
+        return
+
+    }
+    
+    const hashedpassword=await bcrypt.hash(password,5)
+    console.log(hashedpassword)
     const a=await usermodel.create({
         email:email,
-        password:password,
+        password:hashedpassword,
         username:username
     })
     console.log(a);
@@ -31,10 +52,10 @@ app.post("/signin",async (req,res)=>{
     const password=req.body.password;
     const a=await usermodel.findOne({
         email:email,
-        password:password
 
     })
-    if(a){
+    const verifysalt=bcrypt.compare(password,a.password)
+    if(verifysalt){
         const token=jwt.sign({id: a._id.toString()},jwt_secret)
 
         res.json({
