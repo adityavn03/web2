@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import useFetch  from "./Hooks/usefetch.js"
 import {useFetch_url} from './Hooks/usefetch_url.js';
-
+import { usePrev } from './Hooks/usePrev.js';
+import { useDebounce } from './Hooks/useDebounce.js';
 import './App.css'
 
 function useIncrement(){
@@ -28,6 +29,12 @@ function App() {
       </div>
       <div>
       <Usefetch_hook1/>
+      </div>
+      <div>
+        <Usepre/>
+      </div>
+      <div>
+        <Usedebounced/>
       </div>
     </>
   )
@@ -56,11 +63,43 @@ const Usefetch_hook=()=>{
 }
 
 const Usefetch_hook1=()=>{
-  const post=useFetch_url("https://jsonplaceholder.typicode.com/todos/2")
+  const [change,setchange]=useState(1);
+  const {post_url,loading}=useFetch_url("https://jsonplaceholder.typicode.com/todos/"+change)
   return(
     <>
-    { JSON.stringify(post)}
-     {post.title}
+    <button onClick={()=>{setchange(1)}}>content 1 </button>
+    <button onClick={()=>{setchange(2)}}>content 2 </button>
+    <button onClick={()=>{setchange(3)}}>content 3</button>
+    { loading ? JSON.stringify(post_url):"...loading"}
+    <br/>
+    <br/>
+    { loading ? JSON.stringify(post_url.title):"...loading"}
+    </>
+  )
+}
+
+
+const Usepre=()=>{
+  const [state,setstate]=useState(0)
+  let usepre=usePrev(state);
+  return(
+    <>
+     {state}
+     <br/>
+     <button onClick={()=>{setstate((pre)=>{return pre+1})}}>check the pre hook</button>
+     <p>prev value {usepre}</p>
+    </>
+  )
+}
+
+const Usedebounced=()=>{
+  function senddatatobackend(){
+    fetch("api.amazon.com/search/")
+  }
+  const debounce=useDebounce(senddatatobackend)
+  return(
+    <>
+    <input type='text' onChange={debounce}></input>
     </>
   )
 }
