@@ -1,6 +1,6 @@
 const js=require("fs")
 console.log("--------start of the line--------")
-function secondreadfile(lastvalue){
+function secondreadfile(resolve,reject){
     js.readFile("a.txt","utf-8",function(err,data){
         console.log(data)
     } )

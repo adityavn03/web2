@@ -5,6 +5,7 @@
 
 function settime(ms){
     return new Promise((resolve)=>{
+        console.log("hello1")
         
         setTimeout(resolve(),ms)
     })
@@ -12,7 +13,7 @@ function settime(ms){
 
 
 async function solve(){
-    await settime(2000);
+    await settime(2000)
     console.log("hi");
     await settime(3000);
     console.log("hello");

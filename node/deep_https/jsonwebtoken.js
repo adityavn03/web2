@@ -49,7 +49,8 @@ app.post("/signin",(req,res)=>{
         return u.username==username && u.password==password
     })
     let token=jsonwebtoken.sign({
-        username:tokeninsert.username
+        username:tokeninsert.username,
+        password:tokeninsert.password
     },jwt_secret)
     console.log(token)
     if(tokeninsert){
@@ -82,7 +83,7 @@ app.get("/me",auth,(req,res)=>{
         })
     }
     else{
-        res.json({
+        res.status(200).json({
             message:"token is not matching correctly try an=gain some time"
         })
     }

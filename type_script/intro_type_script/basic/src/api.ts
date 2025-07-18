@@ -4,7 +4,7 @@ interface user{
     profession:string,
     foot:string
 }
-type userpros=Pick<user,'name'|'age'|'foot'>
+type userpros=Pick<user,'name'|'age'|'foot'>  //select the only the give key values
 type userpartial=Partial<userpros>             //partial is used
 function pickfunction(user_detail:userpros){
     console.log(user_detail.name)
